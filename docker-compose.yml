@@ -1,0 +1,76 @@
+version: '3.9'
+
+services:
+  # NGINX Service
+  nginx:
+    image: nginx:alpine
+    container_name: smart_retail_nginx
+    restart: always
+    volumes:
+      - ./public:/var/www/html/public
+      - ./docker/nginx/:/etc/nginx/conf.d/
+      - ./docker/nginx/log:/var/log/nginx
+    ports:
+      - 8000:80
+    links:
+      - php
+      - mariadb
+
+  # PHP Service
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: smart_retail_php
+    container_name: smart_retail_system
+    restart: always
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - TZ=Asia/Kathmandu
+    links:
+      - syslog-ng
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "udp://127.0.0.1:514"
+        syslog-facility: daemon
+        tag: "smart-retail-system"
+
+  # MariaDB Service
+  mariadb:
+    image: mariadb:latest
+    container_name: smart_retail_mariadb
+    restart: always
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    environment:
+      - MARIADB_ROOT_PASSWORD=r3DNyxr.U4}pyU,v
+      - MARIADB_DATABASE=smart_retail_db
+
+  # phpMyAdmin Service
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: smart_retail_phpmyadmin
+    restart: always
+    ports:
+      # Only exposed to Localhost for security during Production.
+      - 127.0.0.1:9000:80
+    links:
+      - mariadb:db
+
+  # Syslog-ng Service
+  syslog-ng:
+    image: linuxserver/syslog-ng:latest
+    container_name: smart_retail_syslog
+    restart: always
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kathmandu
+    volumes:
+      - ./docker/syslog/syslog-ng.conf:/config/syslog-ng.conf
+      - ./docker/syslog/log:/var/log
+    ports:
+      # Only exposed to Localhost for security during Production.
+      - 127.0.0.1:514:514/udp
