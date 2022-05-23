@@ -15,4 +15,6 @@ Route::group([
     Route::group(['namespace' => 'Auth'], function() {
         Route::post('login', 'LoginController@login')->name('login');
     });
+
+    //
 });

@@ -23,7 +23,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         if (! $token = auth()->claims(['username' => $request->username])->attempt($request->only(['username', 'password']))) {
-            abort(401, 'Unauthoried');
+            abort(401, 'Unauthorized');
         }
 
         return $this->respondWithToken($token);
