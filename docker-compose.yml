@@ -45,8 +45,8 @@ services:
     volumes:
       - ./docker/mysql:/var/lib/mysql
     environment:
-      - MARIADB_ROOT_PASSWORD=r3DNyxr.U4}pyU,v
-      - MARIADB_DATABASE=smart_retail_db
+      - MARIADB_ROOT_PASSWORD=$DB_PASSWORD
+      - MARIADB_DATABASE=$DB_DATABASE
 
   # phpMyAdmin Service
   phpmyadmin:
