@@ -19,5 +19,8 @@ Route::group([
     Route::group(['middleware' => 'auth'], function() {
         // Categories
         Route::apiResource('categories', 'CategoryController');
+
+        // Products
+        Route::apiResource('products', 'ProductController');
     });
 });
