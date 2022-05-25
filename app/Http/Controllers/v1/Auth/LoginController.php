@@ -22,21 +22,11 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        if (! $token = auth()->claims(['username' => $request->username])->attempt($request->only(['username', 'password']))) {
+        if (! $token = auth()->attempt($request->only(['username', 'password']))) {
             abort(401, 'Unauthorized');
         }
 
         return $this->respondWithToken($token);
-    }
-
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
-    {
-        return response()->json(auth()->user());
     }
 
     /**

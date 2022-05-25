@@ -16,5 +16,8 @@ Route::group([
         Route::post('login', 'LoginController@login')->name('login');
     });
 
-    //
+    Route::group(['middleware' => 'auth'], function() {
+        // Categories
+        Route::apiResource('categories', 'CategoryController');
+    });
 });

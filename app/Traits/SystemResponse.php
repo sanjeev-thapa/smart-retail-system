@@ -21,7 +21,7 @@ trait SystemResponse
         $statusCode = array_key_exists($statusCode, Response::$statusTexts) ? $statusCode : 500;
 
         return response()->json([
-            'error' => !($statusCode >= 200 && $statusCode < 300),
+            'status' => $statusCode >= 200 && $statusCode < 300,
             'message' => $message
         ], $statusCode);
     }

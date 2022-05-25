@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Traits\SystemResponse;
 
 class CategoryController extends Controller
 {
+    use SystemResponse;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,17 +19,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->success(Category::latest()->paginate());
     }
 
     /**
@@ -37,7 +30,9 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        $validated = $request->validated();
+        Category::create($validated + ['user_id' => auth()->user()->id]);
+        return $this->success('Category Created Successfully', 201);
     }
 
     /**
@@ -48,18 +43,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
+        return $this->success($category);
     }
 
     /**
@@ -71,7 +55,9 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $validated = $request->validated();
+        $category->update($validated + ['user_id' => auth()->user()->id]);
+        return $this->success('Category Updated Successfully', 200);
     }
 
     /**
@@ -82,6 +68,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return $this->success('Category Deleted Successfully', 200);
     }
 }
