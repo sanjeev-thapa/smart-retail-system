@@ -18,4 +18,11 @@ class Customer extends Model
         'is_walk_in',
         'user_id'
     ];
+
+    protected $with = ['user'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
