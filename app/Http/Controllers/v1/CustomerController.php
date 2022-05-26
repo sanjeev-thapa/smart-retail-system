@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
+use App\Traits\SystemResponse;
 
 class CustomerController extends Controller
 {
+    use SystemResponse;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,17 +19,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->success(Customer::latest()->paginate(15));
     }
 
     /**
@@ -37,7 +30,9 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        //
+        $validated = $request->validated();
+        Customer::create($validated + ['user_id' => auth()->user()->id]);
+        return $this->success('Customer Created Successfully', 201);
     }
 
     /**
@@ -48,18 +43,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
-    {
-        //
+        return $this->success($customer);
     }
 
     /**
@@ -71,7 +55,9 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        $validated = $request->validated();
+        $customer->update($validated + ['user_id' => auth()->user()->id]);
+        return $this->success('Customer Updated Successfully');
     }
 
     /**
@@ -82,6 +68,7 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+        return $this->success('Customer Deleted Successfully');
     }
 }

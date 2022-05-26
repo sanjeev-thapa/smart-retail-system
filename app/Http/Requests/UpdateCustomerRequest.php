@@ -13,7 +13,7 @@ class UpdateCustomerRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -24,7 +24,12 @@ class UpdateCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'sometimes|required|max:255',
+            'email' => 'sometimes|nullable|max:255|unique:customers,email,' . $this->customer->id,
+            'phone' => 'sometimes|nullable|integer|unique:customers,phone,' . $this->customer->id,
+            'address' => 'sometimes|nullable|max:255',
+            'gender' => 'sometimes|nullable|max:1',
+            'is_walk_in' => 'sometimes|required|max:1',
         ];
     }
 }
