@@ -13,7 +13,7 @@ class UpdateRFIDRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdateRFIDRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'rfid' => 'required|max:255|unique:rfids,rfid,' . $this->route()->rfid->id,
+            'is_paid' => 'required|max:1',
+            'product_id' => 'required|exists:products,id',
         ];
     }
 }

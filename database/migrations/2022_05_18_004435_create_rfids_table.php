@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('rfids', function (Blueprint $table) {
             $table->id();
             $table->string('rfid')->unique();
-            $table->string('is_paid');
+            $table->char('is_paid', 1);
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

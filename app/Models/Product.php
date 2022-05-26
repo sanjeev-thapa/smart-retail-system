@@ -18,6 +18,8 @@ class Product extends Model
         'category_id'
     ];
 
+    protected $with = ['user', 'category'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -26,5 +28,10 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function rfid()
+    {
+        return $this->hasMany(RFID::class);
     }
 }

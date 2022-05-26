@@ -19,7 +19,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return $this->success(Category::latest()->paginate(10));
+        return $this->success(Category::latest()->paginate(15));
     }
 
     /**

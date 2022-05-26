@@ -22,5 +22,8 @@ Route::group([
 
         // Products
         Route::apiResource('products', 'ProductController');
+
+        // RFIDs
+        Route::apiResource('rfids', 'RFIDController');
     });
 });
