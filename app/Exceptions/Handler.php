@@ -7,9 +7,12 @@ use Throwable;
 use App\Traits\SystemResponse;
 use Illuminate\Http\Response;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Http;
 
 class Handler extends ExceptionHandler
 {
@@ -56,17 +59,17 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (Exception $e, $request) {
-            if($e instanceof AuthenticationException) {
+            if($e instanceof AuthenticationException)
                 return $this->error(Response::$statusTexts[Response::HTTP_UNAUTHORIZED], Response::HTTP_UNAUTHORIZED);
-            }
 
-            if($e instanceof ValidationException){
+            if($e instanceof ValidationException)
                 return $this->error($e->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-            }
 
-            if($e instanceof HttpException) {
+            if(method_exists($e, 'getPrevious') && $e->getPrevious() instanceof ModelNotFoundException)
+                return $this->error(\Str::headline(class_basename($e->getPrevious()->getModel())) . ' ' . Response::$statusTexts[Response::HTTP_NOT_FOUND], Response::HTTP_NOT_FOUND);
+
+            if($e instanceof HttpException)
                 return $this->error(Response::$statusTexts[$e->getStatusCode()], $e->getStatusCode());
-            }
 
             \Log::error($e);
             return $this->error();
