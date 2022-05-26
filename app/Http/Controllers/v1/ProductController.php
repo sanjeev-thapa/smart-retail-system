@@ -19,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return $this->success(Product::latest()->paginate(10));
+        return $this->success(Product::with(['user', 'category'])->latest()->paginate(10));
     }
 
     /**
