@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBasketItemRequest;
 use App\Http\Requests\UpdateBasketItemRequest;
 use App\Models\BasketItem;
+use App\Traits\SystemResponse;
 
 class BasketItemController extends Controller
 {
+    use SystemResponse;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,17 +19,7 @@ class BasketItemController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->success(BasketItem::latest()->paginate(15));
     }
 
     /**
@@ -37,7 +30,9 @@ class BasketItemController extends Controller
      */
     public function store(StoreBasketItemRequest $request)
     {
-        //
+        $validated = $request->validated();
+        BasketItem::create($validated);
+        return $this->success('Basket Item Created Successfully', 201);
     }
 
     /**
@@ -48,18 +43,7 @@ class BasketItemController extends Controller
      */
     public function show(BasketItem $basketItem)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\BasketItem  $basketItem
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(BasketItem $basketItem)
-    {
-        //
+        return $this->success($basketItem);
     }
 
     /**
@@ -71,7 +55,9 @@ class BasketItemController extends Controller
      */
     public function update(UpdateBasketItemRequest $request, BasketItem $basketItem)
     {
-        //
+        $validated = $request->validated();
+        $basketItem->update($validated);
+        return $this->success('Basket Item Updated Successfully');
     }
 
     /**
@@ -82,6 +68,7 @@ class BasketItemController extends Controller
      */
     public function destroy(BasketItem $basketItem)
     {
-        //
+        $basketItem->delete();
+        return $this->success('Basket Item Deleted Successfully');
     }
 }

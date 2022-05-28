@@ -13,7 +13,7 @@ class UpdateBasketItemRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdateBasketItemRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'quantity' => 'sometimes|required|integer',
+            'basket_id' => 'sometimes|required|exists:baskets,id',
+            'product_id' => 'sometimes|required|exists:products,id'
         ];
     }
 }

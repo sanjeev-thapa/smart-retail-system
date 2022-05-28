@@ -34,4 +34,9 @@ class Product extends Model
     {
         return $this->hasMany(RFID::class);
     }
+
+    public function basketItems()
+    {
+        return $this->hasMany(BasketItem::class);
+    }
 }

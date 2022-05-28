@@ -14,4 +14,16 @@ class BasketItem extends Model
         'basket_id',
         'product_id'
     ];
+
+    protected $with = ['basket', 'product'];
+
+    public function basket()
+    {
+        return $this->belongsTo(Basket::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

@@ -13,7 +13,7 @@ class StoreBasketItemRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreBasketItemRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'quantity' => 'required|integer',
+            'basket_id' => 'required|exists:baskets,id',
+            'product_id' => 'required|exists:products,id'
         ];
     }
 }
