@@ -34,5 +34,8 @@ Route::group([
 
         // Basket Item
         Route::apiResource('basket-items', 'BasketItemController');
+
+        // Orders
+        Route::apiResource('orders', 'OrderController');
     });
 });

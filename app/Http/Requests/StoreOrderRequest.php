@@ -13,7 +13,7 @@ class StoreOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -24,7 +24,10 @@ class StoreOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'amount' => 'required|numeric',
+            'payment_type' => 'nullable|max:255',
+            'paid_date' => 'nullable|date',
+            'customer_id' => 'required|exists:customers,id',
         ];
     }
 }

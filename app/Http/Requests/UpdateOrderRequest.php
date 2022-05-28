@@ -13,7 +13,7 @@ class UpdateOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -24,7 +24,10 @@ class UpdateOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'amount' => 'sometimes|required|numeric',
+            'payment_type' => 'sometimes|nullable|max:255',
+            'paid_date' => 'sometimes|nullable|date',
+            'customer_id' => 'sometimes|required|exists:customers,id',
         ];
     }
 }

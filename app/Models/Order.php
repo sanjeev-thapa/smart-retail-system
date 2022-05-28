@@ -11,8 +11,21 @@ class Order extends Model
 
     protected $fillable = [
         'amount',
+        'cash',
         'paid_date',
         'customer_id',
         'user_id'
     ];
+
+    protected $with = ['customer', 'user'];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

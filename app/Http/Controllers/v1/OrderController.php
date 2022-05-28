@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
+use App\Traits\SystemResponse;
 
 class OrderController extends Controller
 {
+    use SystemResponse;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,17 +19,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->success(Order::latest()->paginate(15));
     }
 
     /**
@@ -37,7 +30,9 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        //
+        $validated = $request->validated();
+        Order::create($validated + ['user_id' => auth()->user()->id]);
+        return $this->success('Order Created Successfully', 201);
     }
 
     /**
@@ -48,18 +43,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
-    {
-        //
+        return $this->success($order);
     }
 
     /**
@@ -71,7 +55,9 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+        $validated = $request->validated();
+        $order->update($validated + ['user_id' => auth()->user()->id]);
+        return $this->success('Order Updated Successfully');
     }
 
     /**
@@ -82,6 +68,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return $this->success('Order Deleted Successfully');
     }
 }
