@@ -28,5 +28,8 @@ Route::group([
 
         // Customers
         Route::apiResource('customers', 'CustomerController');
+
+        // Baskets
+        Route::apiResource('baskets', 'BasketController');
     });
 });

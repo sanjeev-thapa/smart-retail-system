@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBasketRequest;
 use App\Http\Requests\UpdateBasketRequest;
 use App\Models\Basket;
+use App\Traits\SystemResponse;
 
 class BasketController extends Controller
 {
+    use SystemResponse;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,17 +19,7 @@ class BasketController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->success(Basket::latest()->paginate(15));
     }
 
     /**
@@ -37,7 +30,9 @@ class BasketController extends Controller
      */
     public function store(StoreBasketRequest $request)
     {
-        //
+        $validated = $request->validated();
+        Basket::create($validated + ['user_id' => auth()->user()->id]);
+        return $this->success('Basket Created Successfully', 201);
     }
 
     /**
@@ -48,18 +43,7 @@ class BasketController extends Controller
      */
     public function show(Basket $basket)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Basket  $basket
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Basket $basket)
-    {
-        //
+        return $this->success($basket);
     }
 
     /**
@@ -71,7 +55,9 @@ class BasketController extends Controller
      */
     public function update(UpdateBasketRequest $request, Basket $basket)
     {
-        //
+        $validated = $request->validated();
+        $basket->update($validated + ['user_id' => auth()->user()->id]);
+        return $this->success('Baket Updated Successfully');
     }
 
     /**
@@ -82,6 +68,7 @@ class BasketController extends Controller
      */
     public function destroy(Basket $basket)
     {
-        //
+        $basket->delete();
+        return $this->success('Basket Deleted Successfully');
     }
 }
