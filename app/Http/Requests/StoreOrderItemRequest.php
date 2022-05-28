@@ -13,7 +13,7 @@ class StoreOrderItemRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreOrderItemRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'product_id' => 'required|exists:products,id',
+            'rfid' => 'required|exists:rfids,rfid',
+            'order_id' => 'required|exists:orders,id'
         ];
     }
 }

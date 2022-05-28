@@ -14,4 +14,21 @@ class OrderItem extends Model
         'rfid',
         'order_id'
     ];
+
+    protected $with = ['product', 'rfid', 'order'];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function rfid()
+    {
+        return $this->belongsTo(RFID::class, 'rfid', 'rfid');
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

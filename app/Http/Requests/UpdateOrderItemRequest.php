@@ -13,7 +13,7 @@ class UpdateOrderItemRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdateOrderItemRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'product_id' => 'sometimes|required|exists:products,id',
+            'rfid' => 'sometimes|required|exists:rfids,rfid',
+            'order_id' => 'sometimes|required|exists:orders,id'
         ];
     }
 }

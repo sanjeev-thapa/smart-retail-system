@@ -5,10 +5,14 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderItemRequest;
 use App\Http\Requests\UpdateOrderItemRequest;
+use App\Models\Order;
 use App\Models\OrderItem;
+use App\Traits\SystemResponse;
 
 class OrderItemController extends Controller
 {
+    use SystemResponse;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,17 +20,7 @@ class OrderItemController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->success(OrderItem::latest()->paginate(15));
     }
 
     /**
@@ -37,7 +31,9 @@ class OrderItemController extends Controller
      */
     public function store(StoreOrderItemRequest $request)
     {
-        //
+        $validated = $request->validated();
+        OrderItem::create($validated);
+        return $this->success('Order Items Created Successfully', 201);
     }
 
     /**
@@ -48,18 +44,7 @@ class OrderItemController extends Controller
      */
     public function show(OrderItem $orderItem)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\OrderItem  $orderItem
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(OrderItem $orderItem)
-    {
-        //
+        return $this->success($orderItem);
     }
 
     /**
@@ -71,7 +56,9 @@ class OrderItemController extends Controller
      */
     public function update(UpdateOrderItemRequest $request, OrderItem $orderItem)
     {
-        //
+        $validated = $request->validated();
+        $orderItem->update($validated);
+        return $this->success('Order Items Updated Successfully');
     }
 
     /**
@@ -82,6 +69,7 @@ class OrderItemController extends Controller
      */
     public function destroy(OrderItem $orderItem)
     {
-        //
+        $orderItem->delete();
+        return $this->success('Order Item Deleted Successfully');
     }
 }

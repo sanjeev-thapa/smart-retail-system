@@ -37,5 +37,8 @@ Route::group([
 
         // Orders
         Route::apiResource('orders', 'OrderController');
+
+        // Order Items
+        Route::apiResource('order-items', 'OrderItemController');
     });
 });
