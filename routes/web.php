@@ -41,4 +41,10 @@ Route::group([
         // Order Items
         Route::apiResource('order-items', 'OrderItemController');
     });
+
+    // Arduino
+    Route::group(['prefix' => 'arduino'], function(){
+        Route::get('scan', 'ArduinoController@scan');
+        Route::get('paid-status/{rfid}', 'ArduinoController@paidStatus');
+    });
 });
