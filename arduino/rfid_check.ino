@@ -8,12 +8,13 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-#define SSID "tbc_iot"
-#define PASSWORD "secret@arduino"
-#define SERVER_IP "http://192.168.1.2:8000"
+#define SSID "FBI Surveillance Van"
+#define PASSWORD "sweetmom35"
+#define SERVER_IP "http://192.168.1.68:8000"
 
 #define SS_PIN D10
 #define RST_PIN D9
+#define BUZZER D8
 
 ESP8266WiFiMulti WiFiMulti;
  
@@ -39,6 +40,20 @@ void setup()
   Serial.println("Initializing RFID Reader...");
   Serial.println();
 
+  // Set Buzzet
+  pinMode(BUZZER, OUTPUT);
+
+  // Notify User that the System is Ready to be used
+  tone(BUZZER, 600);
+  delay(500);
+  tone(BUZZER, 500);
+  delay(500);
+  tone(BUZZER, 400);
+  delay(500);
+  tone(BUZZER, 500);
+  delay(500);
+  noTone(BUZZER);
+
 }
 
 void verify(String url)
@@ -63,8 +78,19 @@ void verify(String url)
           String payload = http.getString();
           if(payload != "y"){
             Serial.printf("Not Paid");
+            
+            while(true) {
+              tone(BUZZER, 1000);
+              delay(500);
+              tone(BUZZER, 500);
+              delay(500);
+            }
+            
           } else {
             Serial.printf("Paid");
+            tone(BUZZER, 1000);
+            delay(500);
+            noTone(BUZZER);
           }
         }
       } else {

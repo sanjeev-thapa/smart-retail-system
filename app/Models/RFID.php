@@ -17,7 +17,14 @@ class RFID extends Model
         'product_id'
     ];
 
+    protected $appends = ['linked_date'];
+
     protected $with = ['product'];
+
+    public function getLinkedDateAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
 
     public function product()
     {

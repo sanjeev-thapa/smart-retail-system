@@ -63,7 +63,8 @@ class Handler extends ExceptionHandler
                 return $this->error(Response::$statusTexts[Response::HTTP_UNAUTHORIZED], Response::HTTP_UNAUTHORIZED);
 
             if($e instanceof ValidationException)
-                return $this->error($e->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+                return $this->error($e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
+                // return $this->error($e->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
 
             if(method_exists($e, 'getPrevious') && $e->getPrevious() instanceof ModelNotFoundException)
                 return $this->error(\Str::headline(class_basename($e->getPrevious()->getModel())) . ' ' . Response::$statusTexts[Response::HTTP_NOT_FOUND], Response::HTTP_NOT_FOUND);

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('password');
             $table->date('dob');
             $table->char('gender');
+            $table->string('rfid')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

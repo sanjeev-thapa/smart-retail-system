@@ -17,7 +17,7 @@ class Order extends Model
         'user_id'
     ];
 
-    protected $with = ['customer', 'user'];
+    protected $with = ['customer', 'user', 'orderItems'];
 
     public function customer()
     {

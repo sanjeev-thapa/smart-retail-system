@@ -18,8 +18,13 @@ class ArduinoController extends Controller
         }
     
         return cache()->remember('scan', 5, function () use ($request) {
-            return $this->success(['RFID' => $request->rfid]);
+            return $request->rfid;
         });
+    }
+
+    public function get()
+    {
+        return $this->success(RFID::where('rfid', cache()->get('scan'))->firstOrFail());
     }
 
     public function paidStatus($rfid)

@@ -14,6 +14,8 @@ Route::group([
     // Authentication
     Route::group(['namespace' => 'Auth'], function() {
         Route::post('login', 'LoginController@login')->name('login');
+        Route::post('rfid-login', 'LoginController@rfidLogin');
+        Route::get('me', 'LoginController@me')->middleware('auth');
     });
 
     Route::group(['middleware' => 'auth'], function() {
@@ -44,6 +46,7 @@ Route::group([
 
     // Arduino
     Route::group(['prefix' => 'arduino'], function(){
+        Route::get('get', 'ArduinoController@get');
         Route::get('scan', 'ArduinoController@scan');
         Route::get('paid-status/{rfid}', 'ArduinoController@paidStatus');
     });

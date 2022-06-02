@@ -24,9 +24,9 @@ class UpdateRFIDRequest extends FormRequest
     public function rules()
     {
         return [
-            'rfid' => 'required|max:255|unique:rfids,rfid,' . $this->route()->rfid->id,
-            'is_paid' => 'required|max:1',
-            'product_id' => 'required|exists:products,id',
+            'rfid' => 'sometimes|required|max:255|unique:rfids,rfid,' . $this->route()->rfid . ',rfid',
+            'is_paid' => 'sometimes|required|max:1',
+            'product_id' => 'sometimes|required|exists:products,id',
         ];
     }
 }

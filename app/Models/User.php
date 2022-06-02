@@ -26,6 +26,7 @@ class User extends Authenticatable implements JWTSubject
         'username',
         'dob',
         'gender',
+        'rfid',
     ];
 
     /**
@@ -95,5 +96,10 @@ class User extends Authenticatable implements JWTSubject
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
     }
 }

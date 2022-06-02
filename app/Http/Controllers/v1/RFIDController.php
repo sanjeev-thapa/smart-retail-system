@@ -41,9 +41,9 @@ class RFIDController extends Controller
      * @param  \App\Models\RFID  $rfid
      * @return \Illuminate\Http\Response
      */
-    public function show(RFID $rfid)
+    public function show($rfid)
     {
-        return $this->success($rfid);
+        return $this->success(RFID::where(compact('rfid'))->firstOrFail());
     }
 
     /**
@@ -53,10 +53,10 @@ class RFIDController extends Controller
      * @param  \App\Models\RFID  $rfid
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRFIDRequest $request, RFID $rfid)
+    public function update(UpdateRFIDRequest $request, $rfid)
     {
         $validated = $request->validated();
-        $rfid->update($validated);
+        RFID::where(compact('rfid'))->firstOrFail()->update($validated);
         return $this->success('RFID Updated Successfully');
     }
 
@@ -66,9 +66,9 @@ class RFIDController extends Controller
      * @param  \App\Models\RFID  $rfid
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RFID $rfid)
+    public function destroy($rfid)
     {
-        $rfid->delete();
+        RFID::where(compact('rfid'))->firstOrFail()->delete();
         return $this->success('RFID Deleted Successfully');
     }
 }

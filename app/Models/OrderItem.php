@@ -15,7 +15,7 @@ class OrderItem extends Model
         'order_id'
     ];
 
-    protected $with = ['product', 'rfid', 'order'];
+    protected $with = ['product', 'rfid'];
 
     public function product()
     {

@@ -15,8 +15,15 @@ class Category extends Model
         'user_id'
     ];
 
+    protected $with = ['user'];
+
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

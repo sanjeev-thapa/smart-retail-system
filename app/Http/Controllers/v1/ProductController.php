@@ -57,7 +57,7 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
         $product->update($validated);
-        return $this->success('Category Updated Successfully');
+        return $this->success('Product Updated Successfully');
     }
 
     /**
@@ -69,6 +69,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete($product);
-        return $this->success('Category Deleted Successfully');
+        return $this->success('Product Deleted Successfully');
     }
 }

@@ -25,7 +25,7 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'email' => 'nullable|max:255|unique:customers,email',
+            'email' => 'nullable|email|max:255|unique:customers,email',
             'phone' => 'nullable|integer|unique:customers,phone',
             'address' => 'nullable|max:255',
             'gender' => 'nullable|max:1',
